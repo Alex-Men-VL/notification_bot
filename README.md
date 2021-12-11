@@ -7,7 +7,11 @@
 
 ## Как запустить
 
-- Скачайте код;
+- Скачайте код:
+```bash
+$ git clone https://github.com/Alex-Men-VL/notification_bot.git
+$ cd notification_bot
+```
 - Установите зависимости:
 ```bash
 $ pip install -r requirements.txt
