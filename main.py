@@ -11,6 +11,7 @@ from keyboard_utils import make_keyboard_with_lesson_url
 
 def get_response_from_dvmn(headers, params):
     url = 'https://dvmn.org/api/long_polling/'
+
     response = requests.get(url, headers=headers, params=params)
     response.raise_for_status()
     return response.json()
@@ -30,6 +31,7 @@ def send_message_to_user(bot, chat_id, attempts_description):
                 lesson_title=attempt_description['lesson_title']
             )
             reply_markup = None
+
         bot.send_message(chat_id=chat_id,
                          text=message_text,
                          reply_markup=reply_markup)
@@ -56,10 +58,11 @@ def main():
         except requests.exceptions.ConnectionError:
             logging.info('Problems with Internet connection')
         else:
-            if decoded_response['status'] == 'found':
+            response_status = decoded_response['status']
+            if response_status == 'found':
                 send_message_to_user(bot, chat_id,
                                      decoded_response['new_attempts'])
-            else:
+            elif response_status == 'timeout':
                 timestamp = decoded_response['timestamp_to_request']
                 params.update({'timestamp': timestamp})
 
