@@ -52,9 +52,9 @@ def main():
         try:
             decoded_response = get_response_from_dvmn(headers, params)
         except requests.exceptions.ReadTimeout:
-            logging.info(f'Ответ от сервера не был получен')
+            logging.info('The response from the server was not received')
         except requests.exceptions.ConnectionError:
-            logging.info(f'Проблемы с интернет соединением')
+            logging.info('Problems with Internet connection')
         else:
             if decoded_response['status'] == 'found':
                 send_message_to_user(bot, chat_id,
