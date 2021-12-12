@@ -60,11 +60,11 @@ def main():
         else:
             response_status = decoded_response['status']
             if response_status == 'found':
-                send_message_to_user(bot, chat_id,
-                                     decoded_response['new_attempts'])
-            elif response_status == 'timeout':
+                timestamp = decoded_response['last_attempt_timestamp']
+                send_message_to_user(bot, chat_id, decoded_response['new_attempts'])
+            else:
                 timestamp = decoded_response['timestamp_to_request']
-                params.update({'timestamp': timestamp})
+            params.update({'timestamp': timestamp})
 
 
 if __name__ == '__main__':
