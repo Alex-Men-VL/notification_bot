@@ -12,7 +12,7 @@ from keyboard_utils import make_keyboard_with_lesson_url
 def get_response_from_dvmn(headers, params):
     url = 'https://dvmn.org/api/long_polling/'
 
-    response = requests.get(url, headers=headers, params=params)
+    response = requests.get(url, headers=headers, params=params, timeout=100)
     response.raise_for_status()
     return response.json()
 
