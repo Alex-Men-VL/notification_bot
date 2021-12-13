@@ -1,5 +1,6 @@
 import logging
 import os
+from time import sleep
 
 import requests
 import telegram
@@ -38,6 +39,7 @@ def send_message_to_user(bot, chat_id, attempts_description):
 
 
 def main():
+    logging.basicConfig(level=logging.INFO)
     load_dotenv()
 
     dvmn_token = os.getenv('DVMN_TOKEN')
@@ -56,6 +58,7 @@ def main():
             logging.info('The response from the server was not received')
         except requests.exceptions.ConnectionError:
             logging.info('Problems with Internet connection')
+            sleep(300)
         else:
             response_status = dvmn_response['status']
             if response_status == 'found':
