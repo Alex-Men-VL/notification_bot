@@ -38,7 +38,6 @@ def send_message_to_user(bot, chat_id, attempts_description):
 
 
 def main():
-    logging.basicConfig(level=logging.INFO)
     load_dotenv()
 
     dvmn_token = os.getenv('DVMN_TOKEN')
