@@ -52,18 +52,18 @@ def main():
     }
     while True:
         try:
-            decoded_response = get_response_from_dvmn(headers, params)
+            dvmn_response = get_response_from_dvmn(headers, params)
         except requests.exceptions.ReadTimeout:
             logging.info('The response from the server was not received')
         except requests.exceptions.ConnectionError:
             logging.info('Problems with Internet connection')
         else:
-            response_status = decoded_response['status']
+            response_status = dvmn_response['status']
             if response_status == 'found':
-                timestamp = decoded_response['last_attempt_timestamp']
-                send_message_to_user(bot, chat_id, decoded_response['new_attempts'])
+                timestamp = dvmn_response['last_attempt_timestamp']
+                send_message_to_user(bot, chat_id, dvmn_response['new_attempts'])
             else:
-                timestamp = decoded_response['timestamp_to_request']
+                timestamp = dvmn_response['timestamp_to_request']
             params.update({'timestamp': timestamp})
 
 
