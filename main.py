@@ -5,7 +5,7 @@ from time import sleep
 import requests
 from dotenv import load_dotenv
 
-from tg_notifictaion_bot import TgNotificationBot
+from tg_notifictaion_bot import TgNotificationBot, TelegramLogsHandler
 
 
 def get_response_from_dvmn(headers, params):
@@ -24,6 +24,12 @@ def main():
     chat_id = os.getenv('CHAT_ID')
 
     bot = TgNotificationBot(bot_token, dvmn_token, chat_id)
+
+    logger = logging.getLogger('Logger')
+    tg_handler = TelegramLogsHandler(bot.bot, chat_id)
+    logger.addHandler(tg_handler)
+    logger.warning('Бот запущен')
+
     params = {}
     headers = {
         'Authorization': f'Token {dvmn_token}',
@@ -32,10 +38,13 @@ def main():
         try:
             dvmn_response = get_response_from_dvmn(headers, params)
         except requests.exceptions.ReadTimeout:
-            logging.info('The response from the server was not received')
+            logger.info('The response from the server was not received')
         except requests.exceptions.ConnectionError:
-            logging.info('Problems with Internet connection')
+            logger.info('Problems with Internet connection')
             sleep(300)
+        except Exception as err:
+            logger.exception(err)
+            break
         else:
             response_status = dvmn_response['status']
             if response_status == 'found':

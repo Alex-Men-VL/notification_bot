@@ -17,27 +17,11 @@ class TelegramLogsHandler(logging.Handler):
         self.bot.send_message(chat_id=self.chat_id, text=log_entry)
 
 
-class LoggingMixin:
-    def __getattr__(self, name):
-        if name in ['critical', 'error', 'warning', 'info', 'debug']:
-            if not hasattr(self.__class__, '__logger'):
-                self.__class__.__logger = logging.getLogger(
-                    self.__class__.__module__
-                )
-                self.__class__.__logger.setLevel(logging.WARNING)
-                self.__class__.__logger.addHandler(
-                    TelegramLogsHandler(self.bot, self.chat_id)
-                )
-            return getattr(self.__class__.__logger, name)
-
-
-class TgNotificationBot(LoggingMixin):
+class TgNotificationBot():
     def __init__(self, bot_token, dvmn_token, chat_id):
         self.bot = telegram.Bot(token=bot_token)
         self.dvmn_token = dvmn_token
         self.chat_id = chat_id
-
-        self.warning('Бот запущен')
 
     def send_message_to_user(self, attempts_description):
         for attempt_description in attempts_description:
