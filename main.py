@@ -24,7 +24,6 @@ def main():
     chat_id = os.getenv('CHAT_ID')
 
     bot = TgNotificationBot(bot_token, dvmn_token, chat_id)
-    logging.warning('Бот запущен')
     params = {}
     headers = {
         'Authorization': f'Token {dvmn_token}',
@@ -41,7 +40,7 @@ def main():
             response_status = dvmn_response['status']
             if response_status == 'found':
                 timestamp = dvmn_response['last_attempt_timestamp']
-                bot.send_message_to_user(chat_id, dvmn_response['new_attempts'])
+                bot.send_message_to_user(dvmn_response['new_attempts'])
             else:
                 timestamp = dvmn_response['timestamp_to_request']
             params.update({'timestamp': timestamp})
