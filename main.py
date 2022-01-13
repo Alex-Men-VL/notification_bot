@@ -3,11 +3,9 @@ import os
 from time import sleep
 
 import requests
-import telegram
 from dotenv import load_dotenv
 
-import static_text
-from keyboard_utils import make_keyboard_with_lesson_url
+from tg_notifictaion_bot import TgNotificationBot
 
 
 def get_response_from_dvmn(headers, params):
@@ -18,26 +16,6 @@ def get_response_from_dvmn(headers, params):
     return response.json()
 
 
-def send_message_to_user(bot, chat_id, attempts_description):
-    for attempt_description in attempts_description:
-        if attempt_description['is_negative']:
-            message_text = static_text.negative_message.format(
-                lesson_title=attempt_description['lesson_title']
-            )
-            reply_markup = make_keyboard_with_lesson_url(
-                attempt_description['lesson_url']
-            )
-        else:
-            message_text = static_text.positive_message(
-                lesson_title=attempt_description['lesson_title']
-            )
-            reply_markup = None
-
-        bot.send_message(chat_id=chat_id,
-                         text=message_text,
-                         reply_markup=reply_markup)
-
-
 def main():
     load_dotenv()
 
@@ -45,7 +23,8 @@ def main():
     bot_token = os.getenv('BOT_TOKEN')
     chat_id = os.getenv('CHAT_ID')
 
-    bot = telegram.Bot(token=bot_token)
+    bot = TgNotificationBot(bot_token, dvmn_token, chat_id)
+    logging.warning('Бот запущен')
     params = {}
     headers = {
         'Authorization': f'Token {dvmn_token}',
@@ -62,7 +41,7 @@ def main():
             response_status = dvmn_response['status']
             if response_status == 'found':
                 timestamp = dvmn_response['last_attempt_timestamp']
-                send_message_to_user(bot, chat_id, dvmn_response['new_attempts'])
+                bot.send_message_to_user(chat_id, dvmn_response['new_attempts'])
             else:
                 timestamp = dvmn_response['timestamp_to_request']
             params.update({'timestamp': timestamp})
