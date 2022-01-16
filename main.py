@@ -7,6 +7,8 @@ from dotenv import load_dotenv
 
 from tg_notifictaion_bot import TgNotificationBot, TelegramLogsHandler
 
+logger = logging.getLogger(__file__)
+
 
 def get_response_from_dvmn(headers, params):
     url = 'https://dvmn.org/api/long_polling/'
@@ -25,7 +27,6 @@ def main():
 
     bot = TgNotificationBot(bot_token, dvmn_token, chat_id)
 
-    logger = logging.getLogger('Logger')
     tg_handler = TelegramLogsHandler(bot.bot, chat_id)
     logger.addHandler(tg_handler)
     logger.warning('Бот запущен')
