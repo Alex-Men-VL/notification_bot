@@ -39,7 +39,7 @@ docker ps -a
 ```
 - При наличии ошибок, проверьте логи:
 ```shell
-docker logs <ID конетейнера>
+docker logs <ID контейнера>
 ```
 
 
