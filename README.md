@@ -33,25 +33,25 @@ $ python3 main.py
 Создайте образ командой:
 
 ```shell
-docker build -t tg_bot .
+$ docker build -t tg_bot .
 ```
 
 Запустите контейнер командой:
 
 ```shell
-docker run -d --env-file .env tg_bot
+$ docker run -d --env-file .env tg_bot
 ```
 
 Проверьте статус созданного контейнера:
 
 ```shell
-docker ps -a
+$ docker ps -a
 ```
 
 При наличии ошибок, проверьте логи:
 
 ```shell
-docker logs <ID контейнера>
+$ docker logs <ID контейнера>
 ```
 
 ## Деплой на Heroku с помощью Dockerfile
