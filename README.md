@@ -54,6 +54,34 @@ docker ps -a
 docker logs <ID контейнера>
 ```
 
+## Деплой на Heroku с помощью Dockerfile
+
+Создайте приложение на Heroku:
+
+```shell
+$ heroku login
+$ heroku create
+$ heroku git:remote -a <название приложения>
+```
+
+Добавьте переменные окружения:
+
+```shell
+$ heroku config:set <ПЕРЕМЕННАЯ=значение>
+```
+
+Установите `stack` вашего приложения в режим `container`:
+
+```shell
+$ heroku stack:set container
+```
+
+Отправьте свое приложение на Heroku
+
+```shell
+$ git push heroku main
+```
+
 ## Переменные окружения
 
 Часть данных берется из переменных окружения. Чтобы их определить, создайте файл `.env` 
